@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 const LoginForm = () => {
@@ -24,7 +25,7 @@ const LoginForm = () => {
       console.log('Login successful:', response.data);
       // Save token or handle successful login as needed
       localStorage.setItem('token', response.data.token); // Save token to local storage
-      navigate('/data-entry'); // Redirect to data entry page
+      navigate('/reports'); // Redirect to data entry page
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid login credentials');
       console.error(err);
@@ -32,6 +33,7 @@ const LoginForm = () => {
   };
 
   return (
+    <div>
     <form onSubmit={handleLogin} className="space-y-4">
       <input
         type="text"
@@ -55,6 +57,11 @@ const LoginForm = () => {
         Login
       </button>
     </form>
+    <p className="mt-4 text-center">
+    Don't have an account? <Link to="/signup" className="text-blue-500">Signup</Link>
+    </p>
+   </div>
+
   );
 };
 

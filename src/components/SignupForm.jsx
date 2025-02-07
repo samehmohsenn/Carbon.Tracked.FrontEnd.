@@ -1,6 +1,7 @@
 // src/components/SignupForm.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const SignupForm = () => {
   const [companyName, setCompanyName] = useState('');
@@ -39,6 +40,7 @@ const SignupForm = () => {
   };
 
   return (
+    <div>
     <form onSubmit={handleSignup} className="space-y-4">
       <input
         type="text"
@@ -78,6 +80,10 @@ const SignupForm = () => {
         Sign Up
       </button>
     </form>
+    <p className="mt-4 text-center">
+          Have an account? <Link to="/login" className="text-blue-500">Login</Link>
+    </p>
+    </div>
   );
 };
 

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import {jwtDecode} from 'jwt-decode';
 
 const DataEntryForm = () => {
   const [username, setUsername] = useState('');
@@ -20,6 +21,7 @@ const DataEntryForm = () => {
     if (!token) {
       navigate('/login'); // Redirect to login page if no token is found
     }
+   setUsername(jwtDecode(token).username);
   }, [navigate]);
   
   const handleDataEntry = async (e) => {
@@ -34,8 +36,7 @@ const DataEntryForm = () => {
       setError('Invalid JSON format. Please correct your data.');
       return;
     }
-
-    // Prepare the payload using the data from the form
+      // Prepare the payload using the data from the form
     const payload = {
       username,
       data: parsedData,
@@ -45,24 +46,31 @@ const DataEntryForm = () => {
     try {
       // Post the payload to the /emissiondata endpoint
       const response = await axios.post(`${API_URL}/emissiondata`, payload);
+      console.log(response.status)
       setSuccess('Data submitted successfully!');
       console.log('Submission response:', response.data);
       // Clear the form fields if needed
-      setUsername('');
+      // setUsername('');
       setDataText('');
       setMonth('');
     } catch (err) {
-      setError('Error submitting data. Please try again.');
+      console.log("in catch: "+ err.response.status)
+      if(err.status === 404){
+        setError('Entry for this month already exists. Delete it from reports first.');
+      }
+      else {
+      setError('Error submitting data. Please try again.');}
       console.error(err);
     }
   };
+  
 
   return (
     <form onSubmit={handleDataEntry} className="space-y-4">
       <input
         type="text"
         value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        disabled
         placeholder="Username"
         className="w-full px-4 py-2 border rounded"
         required
@@ -80,7 +88,7 @@ const DataEntryForm = () => {
         type="text"
         value={month}
         onChange={(e) => setMonth(e.target.value)}
-        placeholder="Month/Year (e.g., 08/2023)"
+        placeholder="Month/Year (e.g., July 2023)"
         className="w-full px-4 py-2 border rounded"
         required
       />
