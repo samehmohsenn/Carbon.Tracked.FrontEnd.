@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import DataEntryPage from "./pages/DataEntryPage";
@@ -8,10 +9,11 @@ import HomePage from "./components/HomePage";
 import Logout from "./components/Logout";
 import Header from "./components/Header";
 
-const App = () => {
+const AppContent = () => {
+  const location = useLocation();
   return (
-    <Router>
-      <Header />
+    <>
+      {location.pathname !== '/login' && location.pathname !== '/signup' && <Header />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -20,6 +22,14 @@ const App = () => {
         <Route path="/reports" element={<ReportPage />} />
         <Route path="/logout" element={<Logout />} />
       </Routes>
+    </>
+  );
+};
+
+const App = () => {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 };

@@ -6,10 +6,10 @@ import {jwtDecode} from 'jwt-decode';
 
 const DataEntryForm = () => {
   const [username, setUsername] = useState('');
-  const [dataText, setDataText] = useState('');
   const [month, setMonth] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [categories, setCategories] = useState([{ name: '', value: '' }]);
   const navigate = useNavigate();
 
 
@@ -20,6 +20,7 @@ const DataEntryForm = () => {
     const token = localStorage.getItem('token');
     if (!token) {
       navigate('/login'); // Redirect to login page if no token is found
+      return;
     }
    setUsername(jwtDecode(token).username);
   }, [navigate]);
@@ -29,13 +30,13 @@ const DataEntryForm = () => {
     setError('');
     setSuccess('');
 
-    let parsedData;
-    try {
-      parsedData = JSON.parse(dataText);
-    } catch (err) {
-      setError('Invalid JSON format. Please correct your data.');
-      return;
-    }
+      // Convert categories to JSON
+      const parsedData = {};
+      categories.forEach(category => {
+        if (category.name && category.value) {
+          parsedData[category.name] = parseFloat(category.value);
+        }
+      });
       // Prepare the payload using the data from the form
     const payload = {
       username,
@@ -46,27 +47,37 @@ const DataEntryForm = () => {
     try {
       // Post the payload to the /emissiondata endpoint
       const response = await axios.post(`${API_URL}/emissiondata`, payload);
-      console.log(response.status)
       setSuccess('Data submitted successfully!');
-      console.log('Submission response:', response.data);
       // Clear the form fields if needed
-      // setUsername('');
-      setDataText('');
+      setCategories([{ name: '', value: '' }]);
       setMonth('');
     } catch (err) {
-      console.log("in catch: "+ err.response.status)
-      if(err.status === 404){
+      if (err.response && err.response.status === 404) {
         setError('Entry for this month already exists. Delete it from reports first.');
+      } else {
+        setError('Error submitting data.');
       }
-      else {
-      setError('Error submitting data. Please try again.');}
-      console.error(err);
     }
   };
   
+  const handleAddCategory = () => {
+    setCategories([...categories, { name: '', value: '' }]);
+  };
+  const handleRemoveCategory = () => {
+    if (categories.length > 1) {
+      setCategories(categories.slice(0, -1));
+    }
+  };
+
+  const handleCategoryChange = (index, field, value) => {
+    const newCategories = [...categories];
+    newCategories[index][field] = value;
+    setCategories(newCategories);
+  };
 
   return (
     <form onSubmit={handleDataEntry} className="space-y-4">
+
       <input
         type="text"
         value={username}
@@ -76,15 +87,7 @@ const DataEntryForm = () => {
         required
       />
 
-      <textarea
-        value={dataText}
-        onChange={(e) => setDataText(e.target.value)}
-        placeholder='Enter JSON data (e.g., {"key": "value"})'
-        className="w-full px-4 py-2 border rounded h-32"
-        required
-      />
-
-      <input
+<input
         type="text"
         value={month}
         onChange={(e) => setMonth(e.target.value)}
@@ -92,7 +95,36 @@ const DataEntryForm = () => {
         className="w-full px-4 py-2 border rounded"
         required
       />
-
+      
+      {categories.map((category, index) => (
+        <div key={index} className="flex space-x-2">
+          <input
+            type="text"
+            value={category.name}
+            onChange={(e) => handleCategoryChange(index, 'name', e.target.value)}
+            placeholder="Category Name"
+            className="px-4 py-2 border rounded mr-2 w-1/2"
+          />
+          <input
+            type="number"
+            value={category.value}
+            onChange={(e) => handleCategoryChange(index, 'value', e.target.value)}
+            placeholder="Value"
+            className="px-4 py-2 border rounded mr-2 w-1/2"
+          />
+        </div>
+      ))}
+      <button type="button" onClick={handleAddCategory} className="px-4 py-2 bg-green-700 text-white rounded mt-2">
+        Add Category
+      </button>
+      <button
+        type="button"
+        onClick={handleRemoveCategory}
+        className="px-4 py-2 bg-red-500 text-white rounded mt-2 ml-2"
+        disabled={categories.length === 1}
+      >
+        Remove Category
+      </button>
       {error && <p className="text-red-500">{error}</p>}
       {success && <p className="text-green-500">{success}</p>}
 
