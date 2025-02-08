@@ -1,4 +1,3 @@
-// src/components/LoginForm.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -23,7 +22,6 @@ const LoginForm = () => {
       const response = await axios.post(`${API_URL}/users/login`, { username, password });
       setSuccess(response.data.message);
       console.log('Login successful:', response.data);
-      // Save token or handle successful login as needed
       localStorage.setItem('token', response.data.token); // Save token to local storage
       navigate('/reports'); // Redirect to data entry page
     } catch (err) {

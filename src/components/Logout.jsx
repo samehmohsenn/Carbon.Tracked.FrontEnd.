@@ -9,7 +9,7 @@ const Logout = () => {
     navigate('/login'); // Redirect to the signup page
   }, [navigate]);
 
-  return null; // This component does not render anything
+  return null; // does not render anything
 };
 
 export default Logout;

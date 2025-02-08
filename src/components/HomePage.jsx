@@ -12,8 +12,9 @@ const HomePage = () => {
       navigate('/signup');
     }
   }, [navigate]);
+  
 
-  return null; // This component does not render anything
+  return null; //does not render anything
 };
 
 export default HomePage;

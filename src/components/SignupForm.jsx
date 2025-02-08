@@ -1,4 +1,3 @@
-// src/components/SignupForm.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -28,7 +27,6 @@ const SignupForm = () => {
       });
       setSuccess(response.data.message);
       console.log('Signup successful:', response.data);
-      // Optionally, clear the form fields
       setCompanyName('');
       setUsername('');
       setPassword('');

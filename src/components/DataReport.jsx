@@ -56,7 +56,7 @@ const DataReport = () => {
         throw new Error('Invalid token');
       }
       const decodedToken = jwtDecode(token);
-      return decodedToken.userId; // Adjust this based on your token structure
+      return decodedToken.userId;
     } catch (err) {
       setError('Invalid token. Please log in again.');
       navigate('/login');
@@ -211,14 +211,14 @@ const DataReport = () => {
                 <thead>
                   <tr>
                     <th>Emitter</th>
-                    <th>Value</th>
+                    <th>Value (kgCO2e)</th>
                   </tr>
                 </thead>
                 <tbody>
                   {report.categoryEmissions && Object.entries(report.categoryEmissions).map(([emitter, value]) => (
                     <tr key={emitter}>
                       <td className="border border-gray-300 px-4 py-2">{emitter}</td>
-                      <td className="border border-gray-300 px-4 py-2">{value}</td>
+                      <td className="border border-gray-300 px-4 py-2">{value.toFixed(2)}</td>
                     </tr>
                   ))}
                 </tbody>
