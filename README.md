@@ -9,12 +9,21 @@ This project includes all of the UI and FrontEnd functionality needed to provide
 ## SignUp / Login / Logout: 
 ![signup-login-logout preview](https://github.com/user-attachments/assets/04af0138-14df-4302-866d-48f336ccc4b5)
 
+User can signup providing the Company Name, a unique username, the industry it inhabits and a password.
+
+User cannot access any pages without a token (without being logged in).
+
 ## Data Entry: 
+![data-entry preview](https://github.com/user-attachments/assets/312ccbba-26f2-4f0a-b217-1d62491a5d28)
+
+For each month, user can input data for the categories responsible for CO2e and their values, they can dynamically add more or remove categories as applicable to their case.
+
+Users cannot add more than one entry for the same month, to prevent double entries and confusion, user must first delete the old entry from the reports.
+
+They can also see the current categories available in the backend database on the right, providing their name and their unit, so the user knows exactly what kind of data to input.
 
 ## Reports Visualization / Viewing / Search / Deletion: 
-![Uploading reports visualization-viewing-deleting-searching.gif…]()
-
-
+![reports visualization-viewing-deleting-searching](https://github.com/user-attachments/assets/edb390b4-a318-4ea8-86c1-7a441ba374d5)
 
 
 # Dependencies: 
