@@ -25,6 +25,13 @@ They can also see the current categories available in the backend database on th
 ## Reports Visualization / Viewing / Search / Deletion: 
 ![reports visualization-viewing-deleting-searching](https://github.com/user-attachments/assets/edb390b4-a318-4ea8-86c1-7a441ba374d5)
 
+A visualization of the emission reports is shown on a bar chart, depicting each month's total emissions, each month's bar is split into calculated sections with different colors to reflect the amount of emissions caused by each category
+
+For each month entry, a corresponding report is shown that shows the total emissions during that month, the highest emitter, a table showing each category's CO2e and a suggestions area, which provides suggestions for how to decrease their emissions, each emission category's suggestions is shown if it passes the threshold defined in the backend's database.
+
+A delete button is present at the bottom of each report to delete the report and its corresponding data entry, the user can then reenter the month's data.
+
+A search box on the page can filter the reports shown and visualized on the page, based on month, year, or both. enables the user to find a specific entry, see all reports of a single year, or compare this year's emissions to last year's, to see progress more clearly.
 
 # Dependencies: 
 ### Dependencies to run the project:
